@@ -1,4 +1,4 @@
-name: Build & Deploy Nightly images
+232623name: Build & Deploy Nightly images
 on:
   schedule:
     - cron: '0 2 * * *'
@@ -10,21 +10,21 @@ jobs:
       fail-fast: false
       matrix:
         ARCH: [amd64, armhf, arm64, i386]
-        DEBIAN_VERSION: [stretch, buster]
+        DEBIAN_VERSION: [buster]
     env:
       ARCH: ${{matrix.ARCH}}
       DEBIAN_VERSION: ${{matrix.DEBIAN_VERSION}}
+      CORE_VERSION: development
+      WEB_VERSION: devel
+      FTL_VERSION: development
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
         with:
           ref: dev
-      - name: Patching Versions File
+      - name: Checkout Dummy Branch to set image name
         run: |
           git checkout -b nightly
-          echo "CORE_VERSION=development" > VERSIONS
-          echo "WEB_VERSION=devel" >> VERSIONS
-          echo "FTL_VERSION=development" >> VERSIONS
       - name: Run Tests
         run: |
           echo "Building ${ARCH}-${DEBIAN_VERSION}"
@@ -50,12 +50,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           ref: dev
-      - name: Patching Versions File
+      - name: Checkout Dummy Branch to set image name
         run: |
           git checkout -b nightly
-          echo "CORE_VERSION=development" > VERSIONS
-          echo "WEB_VERSION=devel" >> VERSIONS
-          echo "FTL_VERSION=development" >> VERSIONS
       - name: Download workspace files
         uses: actions/download-artifact@v1
         with:

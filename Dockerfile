@@ -5,12 +5,17 @@ ARG PIHOLE_ARCH
 ENV PIHOLE_ARCH "${PIHOLE_ARCH}"
 ARG PIHOLE_TAG
 ENV PIHOLE_TAG "${PIHOLE_TAG}"
+ARG CORE_VERSION
+ENV CORE_VERSION "${CORE_VERSION}"
+ARG WEB_VERSION
+ENV WEB_VERSION "${WEB_VERSION}"
+ARG FTL_VERSION
+ENV FTL_VERSION "${FTL_VERSION}"
 ARG S6_ARCH
 ARG S6_VERSION
 ENV S6OVERLAY_RELEASE "https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-${S6_ARCH}.tar.gz"
 
 COPY install.sh /usr/local/bin/install.sh
-COPY VERSIONS /etc/pi-hole-versions
 ENV PIHOLE_INSTALL /etc/.pihole/automated\ install/basic-install.sh
 
 RUN bash -ex install.sh 2>&1 && \
@@ -54,6 +59,6 @@ ARG MAINTAINER
 LABEL maintainer="${MAINTAINER}"
 LABEL url="https://www.github.com/pi-hole/docker-pi-hole"
 
-HEALTHCHECK CMD dig +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
+HEALTHCHECK CMD dig +short +norecurse +retry=0 @127.0.0.1 pi.hole || exit 1
 
 SHELL ["/bin/bash", "-c"]

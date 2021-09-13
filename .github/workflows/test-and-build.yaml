@@ -2,14 +2,10 @@ name: Test & Build
 on:
   push:
     branches:
-      - master
       - dev
-      - v*
-      - beta-v*
-      - release/*
-    tags:
-      - v*
   pull_request:
+  release:
+    types: [published]
 
 #env:
 #  DOCKER_HUB_REPO: pihole
@@ -21,7 +17,7 @@ jobs:
       fail-fast: false
       matrix:
         ARCH: [amd64, armhf, arm64, i386]
-        DEBIAN_VERSION: [stretch, buster]
+        DEBIAN_VERSION: [buster]
     env:
       ARCH: ${{matrix.ARCH}}
       DEBIAN_VERSION: ${{matrix.DEBIAN_VERSION}}
