@@ -23,7 +23,7 @@ jobs:
       DEBIAN_VERSION: ${{matrix.DEBIAN_VERSION}}
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run Tests
         run: |
           echo "Building ${ARCH}-${DEBIAN_VERSION}"
@@ -47,7 +47,7 @@ jobs:
     needs: test-and-build
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Download workspace files
         uses: actions/download-artifact@v1
         with:
